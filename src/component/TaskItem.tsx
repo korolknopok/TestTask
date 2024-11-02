@@ -43,7 +43,7 @@ const TaskContent = styled.div`
 const Title  = styled.span<{completed : boolean}>`
     text-decoration: ${({ completed }) => (completed ? 'line-through' : 'none')};
     margin-left: 8px;
-    max-width: 50% ;
+    max-width: 500px ;
 `;
 
 const TaskItem: React.FC<TaskItemProps> = ({ id, title, completed, favorite, toggleComplete, toggleFavorite, deleteTask }) => {
