@@ -49,7 +49,6 @@ export const useTaskStore = create<TaskState>((set, get) => ({
                 ...task,
                 favorite: favoriteTasks.some((fav: Task) => fav.id === task.id),
             }));
-            saveTasksToLocalStorage(updatedTasks);
             set({ tasks: updatedTasks });
         } catch (error) {
             console.error('Ошибка при получении задач:', error);
@@ -69,7 +68,6 @@ export const useTaskStore = create<TaskState>((set, get) => ({
             };
             set((state) => {
                 const updatedTasks = [...state.tasks, newTask];
-                saveTasksToLocalStorage(updatedTasks);
                 return { tasks: updatedTasks };
             });
         } catch (error) {
@@ -82,7 +80,6 @@ export const useTaskStore = create<TaskState>((set, get) => ({
             await deleteTask(id);
             set((state) => {
                 const updatedTasks = state.tasks.filter((task) => task.id !== id);
-                saveTasksToLocalStorage(updatedTasks);
                 return { tasks: updatedTasks };
             });
         } catch (error) {
@@ -99,7 +96,6 @@ export const useTaskStore = create<TaskState>((set, get) => ({
                     const updatedTasks = state.tasks.map((task) =>
                         task.id === id ? { ...task, completed: !task.completed } : task
                     );
-                    saveTasksToLocalStorage(updatedTasks);
                     return { tasks: updatedTasks };
                 });
             } catch (error) {
