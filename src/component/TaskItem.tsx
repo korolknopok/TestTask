@@ -21,6 +21,9 @@ const theme = createTheme({
             main: '#7a36d0',
         },
     },
+    typography: {
+        fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    }
 });
 
 const TaskContainer = styled.div`
@@ -29,15 +32,18 @@ const TaskContainer = styled.div`
     justify-content: space-between;
     padding: 10px;
     border-bottom: 1px solid #ccc;
+    
 `;
 
 const TaskContent = styled.div`
     display: flex;
+    align-items: center;
 `;
 
 const Title  = styled.span<{completed : boolean}>`
     text-decoration: ${({ completed }) => (completed ? 'line-through' : 'none')};
     margin-left: 8px;
+    max-width: 50% ;
 `;
 
 const TaskItem: React.FC<TaskItemProps> = ({ id, title, completed, favorite, toggleComplete, toggleFavorite, deleteTask }) => {
@@ -46,14 +52,14 @@ const TaskItem: React.FC<TaskItemProps> = ({ id, title, completed, favorite, tog
             <TaskContainer>
                 <TaskContent>
                     <Checkbox checked={completed} onChange={() => toggleComplete(id)}/>
-                    <Title completed={completed}>{title}</Title>
+                    <Title completed={completed} >{title}</Title>
                 </TaskContent>
                 <div>
                     <IconButton onClick={() => toggleFavorite(id)}>
                         {favorite ? <StarIcon color="primary" /> : <StarBorderIcon />}
                     </IconButton>
                     <IconButton onClick={() => deleteTask(id)}>
-                        <DeleteIcon color="primary" />
+                        <DeleteIcon color="error" />
                     </IconButton>
                 </div>
             </TaskContainer>
