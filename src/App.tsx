@@ -1,15 +1,28 @@
 import React from "react";
-import {Container, Typography} from "@mui/material";
+import {Container, createTheme, Typography, ThemeProvider} from "@mui/material";
 import TaskList from "./component/TaskList";
+
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#7a36d0',
+        },
+    },
+    typography: {
+        fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    }
+});
 
 const App : React.FC = () => {
     return (
-        <Container>
-            <Typography variant="h4" align = "center" fontFamily = '"Roboto", "Helvetica", "Arial", sans-serif'>
-                TODO LIST
-            </Typography>
-            <TaskList/>
-        </Container>
+        <ThemeProvider theme={theme}>
+            <Container>
+                <Typography variant="h4" align = "center" >
+                    TODO LIST
+                </Typography>
+                <TaskList/>
+            </Container>
+        </ThemeProvider>
     )
 }
 

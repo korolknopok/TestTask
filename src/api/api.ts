@@ -64,4 +64,4 @@ export const updateTaskStatus = (id: number, completed: boolean): Promise<Task> 
     handleRequest(axios.put(`${API_URL}/tasks/${id}`, {data: {completed}}));
 
 export const toggleFavoriteTask = (id: number, favorite: boolean): Promise<Task> =>
-    handleRequest(axios.post(`${API_URL}/tasks/${id}`, {data: {favorite}}));
+    handleRequest(axios.put(`${API_URL}/tasks/${id}`, {data: {favorite}}));
