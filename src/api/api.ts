@@ -45,7 +45,7 @@ const handleRequest = async <T>(request: Promise<{ data: T }>): Promise<T> => {
 
 export const addTask = (task : {title: string, description: string, completed: boolean}) : Promise<TaskApiResponse> =>
     handleRequest(
-        axios.post(`${API_URL}/api/tasks`, {
+        axios.post(`${API_URL}/tasks`, {
             data: {
                 name: task.title,
                 description: task.description || '',
