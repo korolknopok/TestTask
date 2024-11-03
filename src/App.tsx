@@ -19,7 +19,7 @@ const App : React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
             <Container>
-                <Typography variant="h4" align = "center" >
+                <Typography variant="h4" align = "center" mt= '20px' >
                     TODO LIST
                 </Typography>
                 <TaskManager />

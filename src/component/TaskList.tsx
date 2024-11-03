@@ -2,14 +2,14 @@ import React, { useEffect, useRef, useCallback } from "react";
 import { useTaskStore } from "../store/taskStore";
 import TaskItem from "./TaskItem";
 
-interface Task{
+interface Task {
     id: number;
     title: string;
     completed: boolean;
     favorite: boolean;
 }
 
-const TaskList : React.FC = () => {
+const TaskList: React.FC = () => {
     const { fetchTasks, toggleTaskStatus, deleteTask, toggleFavorite, filteredTasks } = useTaskStore();
     const observerRef = useRef<IntersectionObserver | null>(null);
 
@@ -17,25 +17,29 @@ const TaskList : React.FC = () => {
         (node: HTMLDivElement | null) => {
             if (observerRef.current) observerRef.current.disconnect();
             observerRef.current = new IntersectionObserver((entries) => {
-                if (entries[0].isIntersecting) fetchTasks();
+                if (entries[0].isIntersecting) {
+                    console.log("Loading more tasks...");
+                    fetchTasks();
+                }
             });
             if (node) observerRef.current.observe(node);
         },
         [fetchTasks]
     );
 
+
     useEffect(() => {
-        fetchTasks();
+        fetchTasks(); 
     }, [fetchTasks]);
 
     const tasksToDisplay = filteredTasks();
 
     return (
         <div>
-            {tasksToDisplay.map((task , index) => (
+            {tasksToDisplay.map((task, index) => (
                 <div
-                    key = {task.id}
-                    ref = {index === tasksToDisplay.length - 1 ? lastTaskElementRef: null }
+                    key={task.id}
+                    ref={index === tasksToDisplay.length - 1 ? lastTaskElementRef : null} // Привязываем последний элемент к observer
                 >
                     <TaskItem
                         id={task.id}
@@ -48,8 +52,9 @@ const TaskList : React.FC = () => {
                     />
                 </div>
             ))}
+            {tasksToDisplay.length === 0 && <div>No tasks available.</div>} {/* Сообщение, если задач нет */}
         </div>
-    )
+    );
 }
 
 export default TaskList;
