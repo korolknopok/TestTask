@@ -21,7 +21,6 @@ const TaskContainer = styled.div`
     justify-content: space-between;
     padding: 10px;
     border-bottom: 1px solid #ccc;
-    
 `;
 
 const TaskContent = styled.div`
