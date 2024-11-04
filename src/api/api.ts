@@ -21,7 +21,6 @@ interface ApiResponse<T> {
     };
 }
 
-
 interface TaskApiResponse {
     id: number;
     attributes: {
@@ -60,8 +59,14 @@ export const getTasks = (): Promise<ApiResponse<TaskApiResponse>> =>
 export const deleteTask = (id: number) : Promise<void> =>
     handleRequest(axios.delete(`${API_URL}/tasks/${id}`));
 
-export const updateTaskStatus = (id: number, completed: boolean): Promise<Task> =>
-    handleRequest(axios.put(`${API_URL}/tasks/${id}`, {data: {completed}}));
+export const updateTaskStatus = (task: any, completed: boolean): Promise<Task> =>
+{
+    return handleRequest(axios.put(`${API_URL}/tasks/${task.id}`, {
+        data: {
+            name: task.title,
+            description: task.description,
+            status: completed.toString()}}));
+}
 
 export const toggleFavoriteTask = (id: number, favorite: boolean): Promise<Task> =>
     handleRequest(axios.put(`${API_URL}/tasks/${id}`, {data: {favorite}}));

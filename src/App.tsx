@@ -3,7 +3,6 @@ import {Container, createTheme, Typography, ThemeProvider} from "@mui/material";
 import TaskList from "./component/TaskList";
 import TaskManager from "./component/TaskManager";
 
-
 const theme = createTheme({
     palette: {
         primary: {
@@ -19,7 +18,7 @@ const App : React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
             <Container>
-                <Typography variant="h4" align = "center" mt= '20px' >
+                <Typography variant="h4" align="center" mt='20px' >
                     TODO LIST
                 </Typography>
                 <TaskManager />
