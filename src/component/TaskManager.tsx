@@ -4,8 +4,10 @@ import AddTask from './AddTask';
 import TaskFilter from './TaskFilter';
 
 const TaskManager: React.FC = () => {
+    const styles = {my : 2, alignItems: 'center'};
+
     return(
-        <Box display="flex" flexDirection="row" sx = {{my : 2, alignItems: 'center'}}>
+        <Box display="flex" flexDirection="row" sx = {styles}>
             <AddTask/>
             <TaskFilter/>
         </Box>

@@ -2,13 +2,6 @@ import React, { useEffect, useRef, useCallback } from "react";
 import { useTaskStore } from "../store/taskStore";
 import TaskItem from "./TaskItem";
 
-interface Task {
-    id: number;
-    title: string;
-    completed: boolean;
-    favorite: boolean;
-}
-
 const TaskList: React.FC = () => {
     const { fetchTasks, toggleTaskStatus, deleteTask, toggleFavorite, filteredTasks } = useTaskStore();
     const observerRef = useRef<IntersectionObserver | null>(null);
@@ -27,9 +20,8 @@ const TaskList: React.FC = () => {
         [fetchTasks]
     );
 
-
     useEffect(() => {
-        fetchTasks(); 
+        fetchTasks();
     }, [fetchTasks]);
 
     const tasksToDisplay = filteredTasks();
@@ -39,8 +31,7 @@ const TaskList: React.FC = () => {
             {tasksToDisplay.map((task, index) => (
                 <div
                     key={task.id}
-                    ref={index === tasksToDisplay.length - 1 ? lastTaskElementRef : null} // Привязываем последний элемент к observer
-                >
+                    ref={index === tasksToDisplay.length - 1 ? lastTaskElementRef : null}>
                     <TaskItem
                         id={task.id}
                         title={task.title}
@@ -48,11 +39,10 @@ const TaskList: React.FC = () => {
                         favorite={task.favorite}
                         toggleFavorite={() => toggleFavorite(task.id)}
                         toggleComplete={() => toggleTaskStatus(task.id)}
-                        deleteTask={() => deleteTask(task.id)}
-                    />
+                        deleteTask={() => deleteTask(task.id)}/>
                 </div>
             ))}
-            {tasksToDisplay.length === 0 && <div>No tasks available.</div>} {/* Сообщение, если задач нет */}
+            {tasksToDisplay.length === 0 && <div>No tasks available.</div>}
         </div>
     );
 }

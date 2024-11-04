@@ -22,8 +22,6 @@ interface TaskState {
     filteredTasks: () => Task[];
 }
 
-const saveTasksToLocalStorage = (tasks: Task[]) => localStorage.setItem('tasks', JSON.stringify(tasks));
-
 const loadTasksFromLocalStorage = (): Task[] => JSON.parse(localStorage.getItem('tasks') || '[]');
 
 export const useTaskStore = create<TaskState>((set, get) => ({
@@ -41,7 +39,7 @@ export const useTaskStore = create<TaskState>((set, get) => ({
             const fetchedTasks = response.data.map((item) => ({
                 id: item.id,
                 title: item.attributes.name || item.attributes.description || 'Без названия',
-                completed: item.attributes.status === 'done',
+                completed: item.attributes.status === 'true',
                 favorite: false,
             }));
             const favoriteTasks = JSON.parse(localStorage.getItem('favoriteTasks') || '[]');
@@ -63,7 +61,7 @@ export const useTaskStore = create<TaskState>((set, get) => ({
             const newTask: Task = {
                 id: newTaskResponse.id,
                 title: newTaskResponse.attributes.name || title,
-                completed: newTaskResponse.attributes.status === 'done',
+                completed: newTaskResponse.attributes.status === 'false',
                 favorite: false,
             };
             set((state) => {
@@ -91,7 +89,7 @@ export const useTaskStore = create<TaskState>((set, get) => ({
         const task = get().tasks.find((task) => task.id === id);
         if (task) {
             try {
-                await updateTaskStatus(id, !task.completed);
+                await updateTaskStatus(task, !task.completed);
                 set((state) => {
                     const updatedTasks = state.tasks.map((task) =>
                         task.id === id ? { ...task, completed: !task.completed } : task
@@ -115,7 +113,7 @@ export const useTaskStore = create<TaskState>((set, get) => ({
                     );
                     const favoriteTasks = updatedTasks.filter((task) => task.favorite);
                     localStorage.setItem('favoriteTasks', JSON.stringify(favoriteTasks));
-                    saveTasksToLocalStorage(updatedTasks);
+
                     return { tasks: updatedTasks };
                 });
             } catch (error) {

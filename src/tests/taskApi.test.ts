@@ -7,7 +7,7 @@ jest.mock('../api/api', () => ({
     toggleFavoriteTask: jest.fn(),
 }));
 
-describe('Task API Logic', () => {
+describe('Test Store', () => {
     const tasksFromApi = [
         {
             id: 1,
