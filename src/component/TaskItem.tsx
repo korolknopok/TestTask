@@ -39,21 +39,37 @@ const TaskItem: React.FC<TaskItemProps> = ({ id, title, completed, favorite, tog
 
     const handleToggleComplete = async () => {
         setLoading(true);
-        await toggleComplete(id);
-        setLoading(false);
+        try {
+            await toggleComplete(id);
+        } catch (error) {
+            console.error("Error toggling complete:", error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleToggleFavorite = async () => {
         setLoading(true);
-        await toggleFavorite(id);
-        setLoading(false);
+        try {
+            await toggleFavorite(id);
+        } catch (error) {
+            console.error("Error toggling favorite:", error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleDeleteTask = async () => {
         setLoading(true);
-        await deleteTask(id);
-        setLoading(false);
+        try {
+            await deleteTask(id);
+        } catch (error) {
+            console.error("Error deleting task:", error);
+        } finally {
+            setLoading(false);
+        }
     };
+
 
     return (
         <TaskContainer>
