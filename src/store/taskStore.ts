@@ -25,7 +25,8 @@ interface TaskState {
 
 const loadTasksFromLocalStorage = (): Task[] => JSON.parse(localStorage.getItem('tasks') || '[]');
 
-export const useTaskStore = create<TaskState>((set, get) => ({
+export const useTaskStore =
+    create<TaskState>((set, get) => ({
     tasks: loadTasksFromLocalStorage(),
     currentFilter: 'all',
     loading: false,
@@ -50,7 +51,8 @@ export const useTaskStore = create<TaskState>((set, get) => ({
                 favorite: favoriteTasks.some((fav: Task) => fav.id === task.id),
             }));
 
-            updatedTasks.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+            updatedTasks.sort((a, b) =>
+                new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
 
             set({ tasks: updatedTasks });
         } catch (error) {
@@ -73,7 +75,8 @@ export const useTaskStore = create<TaskState>((set, get) => ({
             };
             set((state) => {
                 const updatedTasks = [...state.tasks, newTask];
-                updatedTasks.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+                updatedTasks.sort((a, b) =>
+                    new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
                 return { tasks: updatedTasks };
             });
         } catch (error) {

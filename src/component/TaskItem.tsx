@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, { useCallback, useState } from 'react';
 import { Checkbox, IconButton, CircularProgress } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
@@ -10,9 +10,9 @@ interface TaskItemProps {
     title: string;
     completed: boolean;
     favorite: boolean;
-    toggleComplete: (id: number) => void;
-    toggleFavorite: (id: number) => void;
-    deleteTask: (id: number) => void;
+    toggleComplete: (id: number) => Promise<void>;
+    toggleFavorite: (id: number) => Promise<void>;
+    deleteTask: (id: number) => Promise<void>;
 }
 
 const TaskContainer = styled.div`
@@ -37,7 +37,8 @@ const Title = styled.span<{ completed: boolean }>`
     white-space: nowrap;
 `;
 
-const TaskItem: React.FC<TaskItemProps> = ({ id, title, completed, favorite, toggleComplete, toggleFavorite, deleteTask }) => {
+const TaskItem: React.FC<TaskItemProps> =
+    ({id, title, completed, favorite, toggleComplete, toggleFavorite, deleteTask}) => {
     const [loadingFavorite, setLoadingFavorite] = useState(false);
     const [loadingDelete, setLoadingDelete] = useState(false);
     const [loadingComplete, setLoadingComplete] = useState(false);
@@ -47,7 +48,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ id, title, completed, favorite, tog
         try {
             await toggleComplete(id);
         } catch (error) {
-            console.error("Error toggling complete:", error);
+            console.error("Ошибка при переключении статуса выполнения:", error);
         } finally {
             setLoadingComplete(false);
         }
@@ -58,7 +59,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ id, title, completed, favorite, tog
         try {
             await toggleFavorite(id);
         } catch (error) {
-            console.error("Error toggling favorite:", error);
+            console.error("Ошибка при переключении избранного:", error);
         } finally {
             setLoadingFavorite(false);
         }
@@ -69,7 +70,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ id, title, completed, favorite, tog
         try {
             await deleteTask(id);
         } catch (error) {
-            console.error("Error deleting task:", error);
+            console.error("Ошибка при удалении задачи:", error);
         } finally {
             setLoadingDelete(false);
         }
@@ -78,10 +79,16 @@ const TaskItem: React.FC<TaskItemProps> = ({ id, title, completed, favorite, tog
     return (
         <TaskContainer>
             <TaskContent>
-                <Checkbox
-                    checked={completed}
-                    onChange={handleToggleComplete}/>
-                <Title completed={completed}>{title}</Title>
+                {loadingComplete ? (
+                    <CircularProgress size={24} />
+                ) : (
+                    <Checkbox
+                        checked={completed}
+                        onChange={handleToggleComplete}/>
+                )}
+                {!loadingComplete && (
+                    <Title completed={completed}>{title}</Title>
+                )}
             </TaskContent>
             <div>
                 <IconButton onClick={handleToggleFavorite} disabled={loadingFavorite}>
