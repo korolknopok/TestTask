@@ -3,9 +3,9 @@ import { Box } from '@mui/material';
 import AddTask from './AddTask';
 import TaskFilter from './TaskFilter';
 
-const TaskManager: React.FC = () => {
-    const styles = {my : 2, alignItems: 'center'};
+const styles = {my : 2, alignItems: 'center'};
 
+const TaskManager: React.FC = () => {
     return(
         <Box display="flex" flexDirection="row" sx = {styles}>
             <AddTask/>

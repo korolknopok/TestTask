@@ -6,6 +6,7 @@ interface Task {
     title: string;
     completed: boolean;
     favorite: boolean;
+    createdAt: Date;
 }
 
 interface TaskState {
@@ -41,15 +42,20 @@ export const useTaskStore = create<TaskState>((set, get) => ({
                 title: item.attributes.name || item.attributes.description || 'Без названия',
                 completed: item.attributes.status === 'true',
                 favorite: false,
+                createdAt: new Date(item.attributes.createdAt) || new Date(),
             }));
             const favoriteTasks = JSON.parse(localStorage.getItem('favoriteTasks') || '[]');
             const updatedTasks = fetchedTasks.map(task => ({
                 ...task,
                 favorite: favoriteTasks.some((fav: Task) => fav.id === task.id),
             }));
+
+            updatedTasks.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+
             set({ tasks: updatedTasks });
         } catch (error) {
             console.error('Ошибка при получении задач:', error);
+            alert('Не удалось загрузить задачи. Пожалуйста, попробуйте позже.');
         } finally {
             set({ loading: false });
         }
@@ -60,12 +66,14 @@ export const useTaskStore = create<TaskState>((set, get) => ({
             const newTaskResponse = await addTask({ title, description, completed: false });
             const newTask: Task = {
                 id: newTaskResponse.id,
-                title: newTaskResponse.attributes.name || title,
-                completed: newTaskResponse.attributes.status === 'false',
+                title: newTaskResponse.attributes?.name || title,
+                completed: newTaskResponse.attributes?.status === 'false',
                 favorite: false,
+                createdAt: new Date(),
             };
             set((state) => {
                 const updatedTasks = [...state.tasks, newTask];
+                updatedTasks.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
                 return { tasks: updatedTasks };
             });
         } catch (error) {
@@ -82,6 +90,7 @@ export const useTaskStore = create<TaskState>((set, get) => ({
             });
         } catch (error) {
             console.error('Ошибка при удалении задачи:', error);
+            alert('Не удалось удалить задачу. Пожалуйста, попробуйте позже.');
         }
     },
 
@@ -98,6 +107,7 @@ export const useTaskStore = create<TaskState>((set, get) => ({
                 });
             } catch (error) {
                 console.error('Ошибка при переключении статуса задачи:', error);
+                alert('Не удалось обновить статус задачи. Пожалуйста, попробуйте позже.');
             }
         }
     },
@@ -118,6 +128,7 @@ export const useTaskStore = create<TaskState>((set, get) => ({
                 });
             } catch (error) {
                 console.error('Ошибка при переключении избранного:', error);
+                alert('Не удалось обновить избранное. Пожалуйста, попробуйте позже.');
             }
         }
     },

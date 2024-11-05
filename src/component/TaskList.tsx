@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useCallback } from "react";
+import React, {useEffect, useRef, useCallback, useState} from "react";
 import { useTaskStore } from "../store/taskStore";
 import TaskItem from "./TaskItem";
 
 const TaskList: React.FC = () => {
     const { fetchTasks, toggleTaskStatus, deleteTask, toggleFavorite, filteredTasks } = useTaskStore();
     const observerRef = useRef<IntersectionObserver | null>(null);
+    const [loading, setLoading] = useState(false);
 
     const lastTaskElementRef = useCallback(
         (node: HTMLDivElement | null) => {
@@ -21,10 +22,26 @@ const TaskList: React.FC = () => {
     );
 
     useEffect(() => {
-        fetchTasks();
+        setLoading(true);
+        fetchTasks().finally(() => setLoading(false));
     }, [fetchTasks]);
 
     const tasksToDisplay = filteredTasks();
+
+    const handleToggleFavorite = useCallback((id: number) => {
+        setLoading(true);
+        toggleFavorite(id).finally(() => setLoading(false));
+    }, [toggleFavorite]);
+
+    const handleToggleStatus = useCallback((id: number) => {
+        setLoading(true);
+        toggleTaskStatus(id).finally(() => setLoading(false));
+    }, [toggleTaskStatus]);
+
+    const handleDeleteTask = useCallback((id: number) => {
+        setLoading(true);
+        deleteTask(id).finally(() => setLoading(false));
+    }, [deleteTask]);
 
     return (
         <div>
@@ -37,9 +54,9 @@ const TaskList: React.FC = () => {
                         title={task.title}
                         completed={task.completed}
                         favorite={task.favorite}
-                        toggleFavorite={() => toggleFavorite(task.id)}
-                        toggleComplete={() => toggleTaskStatus(task.id)}
-                        deleteTask={() => deleteTask(task.id)}/>
+                        toggleFavorite={() => handleToggleFavorite(task.id)}
+                        toggleComplete={() => handleToggleStatus(task.id)}
+                        deleteTask={() => handleDeleteTask(task.id)}/>
                 </div>
             ))}
             {tasksToDisplay.length === 0 && <div>No tasks available.</div>}
