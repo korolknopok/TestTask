@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import { SelectChangeEvent, Select, MenuItem} from '@mui/material';
 import { useTaskStore } from '../store/taskStore';
 import styled from 'styled-components';
@@ -14,11 +14,11 @@ const FilterContainer = styled.div`
 const TaskFilter: React.FC = () => {
     const { setFilter, currentFilter, fetchTasks } = useTaskStore();
 
-    const handleFilterChange = (event: SelectChangeEvent<string>) => {
+    const handleFilterChange = useCallback((event: SelectChangeEvent<string>) => {
         const filter = event.target.value as string;
         setFilter(filter);
         fetchTasks();
-    };
+    }, [setFilter, fetchTasks]);
 
     return (
         <FilterContainer>

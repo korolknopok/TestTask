@@ -15,8 +15,8 @@ describe('Test Store', () => {
                 name: 'Test Task 1',
                 description: 'Description 1',
                 status: 'incomplete',
-                createdAt: '2000-01-01',
-                updatedAt: '2000-01-02'
+                createdAt: new Date('2000-01-01'),
+                updatedAt: new Date('2000-01-02'),
             }
         },
         {
@@ -25,11 +25,12 @@ describe('Test Store', () => {
                 name: 'Test Task 2',
                 description: 'Description 2',
                 status: 'done',
-                createdAt: '2000-01-03',
-                updatedAt: '2000-01-04'
+                createdAt: new Date('2000-01-03'),
+                updatedAt: new Date('2000-01-04'),
             }
         }
     ];
+
 
     const favoriteTasksMock = [{ id: 1 }];
 
@@ -59,8 +60,8 @@ describe('Test Store', () => {
                 name: 'New Task',
                 description: 'Task description',
                 status: 'incomplete',
-                createdAt: '2000-01-05',
-                updatedAt: '2000-01-05',
+                createdAt: new Date('2000-01-03'),
+                updatedAt: new Date('2000-01-04'),
             }
         };
 
@@ -78,7 +79,7 @@ describe('Test Store', () => {
     it('should toggle the favorite status of a task and update local storage', async () => {
         useTaskStore.setState({
             tasks: [
-                {id: 1, title: 'Tasks 1', completed: false, favorite: false},
+                {id: 1, title: 'Tasks 1', completed: false, favorite: false, createdAt: new Date('2000-01-03')},
             ]
         });
 
