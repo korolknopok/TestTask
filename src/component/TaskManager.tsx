@@ -6,6 +6,7 @@ import TaskFilter from './TaskFilter';
 const styles = {my : 2, alignItems: 'center'};
 
 const TaskManager: React.FC = () => {
+
     return(
         <Box display="flex" flexDirection="row" sx = {styles}>
             <AddTask/>
